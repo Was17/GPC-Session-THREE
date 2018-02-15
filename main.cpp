@@ -5,6 +5,7 @@
 void initFunc();
 void funReshape(int w, int h);
 void funDisplay();
+void drawTriangulo(char color);
 
 using namespace std;
 
@@ -19,7 +20,7 @@ int main(int argc, char** argv) {
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
     glutInitWindowSize(w,h);
     glutInitWindowPosition(50,50);
-    glutCreateWindow("Sesion 2");
+    glutCreateWindow("Sesion 3");
     
  // Inicializamos GLEW
     GLenum err = glewInit();
@@ -42,23 +43,30 @@ int main(int argc, char** argv) {
 }
 
 void initFunc() {
+   
+ // Test de profundidad
     glEnable(GL_DEPTH_TEST);
-    glShadeModel(GL_SMOOTH);
+    
+ // Modelo de sombreado
+    glShadeModel(GL_FLAT);
+    
 }
 
-GLfloat nplane;
 void funReshape(int wnew, int hnew) {
     
-     glViewport(0, 0, wnew, hnew);
-     w=wnew;
-     h=hnew; 
+ // Configuración del Viewport
+    glViewport(0, 0, wnew, hnew);
 
+ // Captura de w y h
+    w = wnew;
+    h = hnew;
     
 }
+
 void funDisplay() {
     
  // Borramos el buffer de color
-    glClearColor(0.0f, 0.0f, 0.0f, 0.0f); 
+    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
  // Para configurar la matriz matriz P
@@ -67,110 +75,37 @@ void funDisplay() {
     
  // Matriz de Proyección P (Cámara)
     GLfloat aspectRatio = (GLfloat)w/(GLfloat)h;    
-    GLfloat fovy = 25.0f, fplane = 20.0f;
-     nplane = 7.0f;
+    GLfloat fovy = 50.0f, nplane = 0.1f, fplane = 20.0f;
     gluPerspective(fovy,aspectRatio,nplane,fplane);
-
+    
  // Dibujamos un triángulo
-    glBegin(GL_POLYGON);
-        glColor3f(1.0f, 0.0f, 0.0f);
-        glVertex3f(-0.5f, -0.5f, -2.0f);
-        glVertex3f(0.5f, -0.5f, -2.0f);
-        
-        glVertex3f(0.5f, -0.5f, -4.0f);
-        glVertex3f(-0.5f, -0.5f, -4.0f);
-
-     
-    glEnd();
-    glBegin(GL_POLYGON);
-        glColor3f(0.0f, 1.0f, 0.0f);
-      
-        glVertex3f(-0.5f, -0.5f, -4.0f);
-        glVertex3f(0.5f, -0.5f, -4.0f);
-        glVertex3f(0.5f, 0.5f, -4.0f);
-        
-        glVertex3f(-0.5f, 0.5f, -4.0f);
-
-     
-    glEnd();
-     glBegin(GL_POLYGON);
-        glColor3f(0.5f, 0.5f, 0.0f);
-      glVertex3f(-0.5f, -0.5f, -2.0f);
-        glVertex3f(-0.5f, -0.5f, -4.0f);
-        glVertex3f(-0.5f, 0.5f, -4.0f);
-        glVertex3f(-0.5f, 0.5f, -2.0f);
-
-     
-    glEnd();
-     glBegin(GL_POLYGON);
-        glColor3f(0.5f, 0.0f, 0.5f);
-      glVertex3f(0.5f, -0.5f, -2.0f);
-        glVertex3f(0.5f, -0.5f, -4.0f);
-        glVertex3f(0.5f, 0.5f, -4.0f);
-        glVertex3f(0.5f, 0.5f, -2.0f);
-
-     
-    glEnd();
-        glBegin(GL_POLYGON);
-        glColor3f(0.0f, 0.0f, 1.0f);
-        glVertex3f(-0.5f, 0.5f, -2.0f);
-        glVertex3f(0.5f, 0.5f, -2.0f);
-        
-        glVertex3f(0.5f, 0.5f, -4.0f);
-        glVertex3f(-0.5f, 0.5f, -4.0f);
-
-     
-    glEnd();
-    glBegin(GL_POLYGON);
-        glColor3f(1.0f, 1.0f, 1.0f);
-      
-        glVertex3f(-0.5f, -0.5f, -2.0f);
-        glVertex3f(0.5f, -0.5f, -2.0f);
-        glVertex3f(0.5f, 0.5f, -2.0f);
-        
-        glVertex3f(-0.5f, 0.5f, -2.0f);
-
-     
-    glEnd();
-    
-    
-        glBegin(GL_POLYGON);
-       
-      
-        glColor3f(0.0f, 0.0f, 0.0f);
-        
-      glVertex3f(0.0f, -0.5f, -8.0f);
-        glVertex3f(0.5f, 0.0f, -9.0f);
-        glVertex3f(0.0f, 0.5f, -10.0f);
-        glVertex3f(-0.5f, 0.0f, -9.0f);
-
-     
-    glEnd();
-        glBegin(GL_POLYGON);
-        glColor3f(0.75f, 1.0f, 0.0f);
-        glVertex3f(0.0f, -0.5f, -8.0f);
-        
-        glColor3f(0.0f, 0.0f, 0.5f);
-        glVertex3f(0.5f, 0.0f, -9.0f);
-        glVertex3f(0.5f, -0.5f, -9.0f);
-        glVertex3f(0.0f, -1.0f, -8.0f);
-
-     
-    glEnd();
-    glBegin(GL_POLYGON);
-        
-        glColor3f(0.75f,1.0f, 0.0f);
-        glVertex3f(0.0f, -0.5f, -8.0f);
-        
-        glColor3f(1.0f, 0.0f, 0.5f);
-        glVertex3f(-0.5f, 0.0f, -9.0f);
-        glVertex3f(-0.5f, -0.5f, -9.0f);
-        glVertex3f(0.0f, -1.0f, -8.0f);
-
-     
-    glEnd();
+    drawTriangulo('g');
     
  // Intercambiamos los buffers
     glutSwapBuffers();
+    
+}
+
+void drawTriangulo(char color) {
+    
+    switch(color) {
+        case 'r':
+            glColor3f(1.0f, 0.0f, 0.0f);
+            break;
+        case 'g':
+            glColor3f(0.0f, 1.0f, 0.0f);
+            break;
+        case 'b':
+            glColor3f(0.0f, 0.0f, 1.0f);
+            break;
+        default:
+            glColor3f(1.0f, 1.0f, 1.0f);            
+    }
+    
+    glBegin(GL_TRIANGLES);
+        glVertex3f(-0.5f, -0.5f, 0.0f);
+        glVertex3f( 0.5f, -0.5f, 0.0f);
+        glVertex3f( 0.0f,  0.5f, 0.0f);
+    glEnd();
     
 }
