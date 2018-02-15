@@ -6,12 +6,14 @@ void initFunc();
 void funReshape(int w, int h);
 void funDisplay();
 void drawTriangulo(char color);
+void funKeyboard(int key, int x, int y);
 
 using namespace std;
 
 // Variables globales
 int w = 500;
 int h = 500;
+GLfloat desZ = -5.0f;
 
 int main(int argc, char** argv) {
 
@@ -35,6 +37,7 @@ int main(int argc, char** argv) {
  // Configuración CallBacks
     glutReshapeFunc(funReshape);
     glutDisplayFunc(funDisplay);
+    glutSpecialFunc(funKeyboard);
     
  // Bucle principal
     glutMainLoop();
@@ -78,7 +81,20 @@ void funDisplay() {
     GLfloat fovy = 50.0f, nplane = 0.1f, fplane = 20.0f;
     gluPerspective(fovy,aspectRatio,nplane,fplane);
     
- // Dibujamos un triángulo
+ // Para configurar las matrices M y V
+    glMatrixMode(GL_MODELVIEW);  
+    glLoadIdentity();
+    
+ // Matriz de Vista V (Cámara)
+    // Aquí cargaremos la matriz V
+    
+
+    glPushMatrix();
+    glTranslatef(0.0f, 0.0f, desZ);
+    drawTriangulo('g');
+    glPopMatrix();
+     // Dibujamos un triángulo
+    glTranslatef(1.0f, 1.0f, -8.0f);
     drawTriangulo('g');
     
  // Intercambiamos los buffers
@@ -108,4 +124,24 @@ void drawTriangulo(char color) {
         glVertex3f( 0.0f,  0.5f, 0.0f);
     glEnd();
     
+}
+
+void funKeyboard(int key, int x, int y) {
+    
+    switch(key) {
+        case GLUT_KEY_UP:
+            if (desZ<=-20.0f){
+                desZ=0.0f;
+            }
+            desZ -= 0.1f;
+            break;
+        case GLUT_KEY_DOWN:
+            desZ += 0.1f;
+            break;
+        default:
+            desZ = -5.0f;  
+    }
+    
+    glutPostRedisplay();
+      
 }
