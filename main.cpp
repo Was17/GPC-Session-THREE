@@ -14,6 +14,7 @@ using namespace std;
 int w = 500;
 int h = 500;
 GLfloat desZ = -5.0f;
+GLfloat rotY =  0.0f;
 
 int main(int argc, char** argv) {
 
@@ -91,6 +92,8 @@ void funDisplay() {
 
     glPushMatrix();
     glTranslatef(0.0f, 0.0f, desZ);
+    
+    glRotatef(rotY, 0.0f, 1.0f, 0.0f);
     drawTriangulo('g');
     glPopMatrix();
      // Dibujamos un triángulo
@@ -135,11 +138,20 @@ void funKeyboard(int key, int x, int y) {
             }
             desZ -= 0.1f;
             break;
+        
+        case GLUT_KEY_RIGHT:
+            rotY -= 5.0f;
+            break;
+
+        case GLUT_KEY_LEFT:
+            rotY += 5.0f;
+            break;
         case GLUT_KEY_DOWN:
             desZ += 0.1f;
             break;
         default:
             desZ = -5.0f;  
+            rotY = 0.0f;
     }
     
     glutPostRedisplay();
