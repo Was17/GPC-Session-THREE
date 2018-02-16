@@ -5,6 +5,7 @@
 void initFunc();
 void funReshape(int w, int h);
 void funDisplay();
+void drawMolino();
 void drawTriangulo(char color);
 void funKeyboard(int key, int x, int y);
 
@@ -16,6 +17,37 @@ int h = 500;
 GLfloat desZ = -5.0f;
 GLfloat rotY =  0.0f;
 
+GLfloat rotZ =  0.0f;
+void aspa(){
+    glLoadIdentity();
+   glPushMatrix();
+	glTranslatef(0, 0.5, -2.9);
+	
+        glRotated(rotY, 0,1, 0);
+        glRotated(rotZ * (180.0/46), 0, 0, 1);
+        int i;
+	glColor3f(0.4f, 0.4f, 0.8f);
+	for (i = 0; i < 3; i++) {
+		glRotated(120, 0, 0, 1);  // Note: These rotations accumulate.
+		glBegin(GL_TRIANGLES);
+		glVertex3f(0,0,0);
+		glVertex3f(1.0f, 1,0);
+		glVertex3f(0.5f,1,0);
+		glEnd();
+	}
+           glPopMatrix();}
+
+void drawWindmill() {
+	int i;
+        
+	glColor3f(0.8f, 0.8f, 0.9f);
+	glBegin(GL_POLYGON);
+	glVertex3f(-0.05f, 0,0);
+	glVertex3f(0.05f, 0,0);
+	glVertex3f(0.05f, 1,0);
+	glVertex3f(-0.05f,1,0);
+	glEnd();
+}
 int main(int argc, char** argv) {
 
  // Inicializamos GLUT
@@ -88,24 +120,34 @@ void funDisplay() {
     
  // Matriz de Vista V (Cámara)
     // Aquí cargaremos la matriz V
-    
-
-    glPushMatrix();
-    
-    glRotatef(rotY, 0.0f, 1.0f, 0.0f);
-    glTranslatef(0.0f, 0.0f, desZ);
-    
-    drawTriangulo('g');
+      glPushMatrix();
+      
+	glTranslatef(0, -0.4, -3);
+    glRotatef(rotY,0, 1, 0);
+    drawWindmill();
+    aspa();
     glPopMatrix();
-     // Dibujamos un triángulo
-    glTranslatef(1.0f, 1.0f, -8.0f);
-    drawTriangulo('g');
     
  // Intercambiamos los buffers
     glutSwapBuffers();
     
 }
+void drawPunto(){
+      glPushMatrix();
+   glTranslatef(-0.2f, 0.0f, desZ);
+    glRotatef(-135.0f,0.0f,0.0f,1.0f);
+  glBegin(GL_POINTS);
+    
+     glColor3f(1.0f, 1.0f, 1.0f);
+        glVertex3f( 0.0f,  0.0f, 0.0f);
+       
 
+    glEnd();
+     glPopMatrix();
+}
+void drawMolino(){
+ 
+}
 void drawTriangulo(char color) {
     
     switch(color) {
@@ -138,8 +180,10 @@ void funKeyboard(int key, int x, int y) {
                 desZ=0.0f;
             }
             desZ -= 0.1f;
+              rotZ-=5.0f;
             break;
-        
+          
+            
         case GLUT_KEY_RIGHT:
             rotY -= 5.0f;
             break;
@@ -149,10 +193,14 @@ void funKeyboard(int key, int x, int y) {
             break;
         case GLUT_KEY_DOWN:
             desZ += 0.1f;
+            
+            rotZ+=5.0f;
             break;
         default:
             desZ = -5.0f;  
             rotY = 0.0f;
+            
+            rotZ=0.0f;
     }
     
     glutPostRedisplay();
